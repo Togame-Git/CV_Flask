@@ -1,10 +1,13 @@
 from flask import Flask,render_template
+from flask import Flask, render_template, jsonify
+import json
+import sqlite3
 
 app = Flask(__name__) #creating flask app name
 
 @app.route('/')
 def home():
-    return render_template("index.html")
+    return render_template("resume_2.html")
 
 @app.route('/resume_1')
 def resume_1():
