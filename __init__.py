@@ -1,14 +1,17 @@
-from flask import Flask, render_template_string, render_template, jsonify
-from flask import Flask, render_template, request, redirect
-from flask import json
-from urllib.request import urlopen
+from flask import Flask, render_template, request, redirect, jsonify, json
 import sqlite3
+from urllib.request import urlopen
 
+def get_db_connection():
+    conn = sqlite3.connect('/home/togame/www/flask/database.db')  # Remplacez 'database.db' par le chemin de votre base de données SQLite.
+    conn.row_factory = sqlite3.Row  # Accès aux colonnes par nom.
+    return conn
+    
 app = Flask(__name__) #creating flask app name
 
 @app.route('/')
 def home():
-    return render_template("resume_1.html")
+    return render_template("index.html")
 
 @app.route('/resume_1')
 def resume_1():
@@ -23,22 +26,9 @@ def resume_template():
     return render_template("resume_template.html")
 
 # Création d'une nouvelle route pour la lecture de la BDD
-@app.route('/lecture/')
-def ReadBDD():
-    conn = get_db_connection()
-    posts = conn.execute('SELECT * FROM livres').fetchall()
-    conn.close()
-
-    # Convertit la liste de livre en un format JSON
-    json_posts = [{'id': post['id'], 'title': post['title'], 'content': post['auteur']} for post in posts]
-
-    # Renvoie la réponse JSON
-    return jsonify(posts=json_posts)
-
-# Création d'une nouvelle route pour la lecture de la BDD
 @app.route("/consultation/")
 def ReadBDD():
-    conn = sqlite3.connect('/home/togame/www/flask/database.db')
+    conn = get_db_connection()  # Utilisation de la fonction définie pour la connexion
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM livres;')
     data = cursor.fetchall()
