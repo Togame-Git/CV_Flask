@@ -30,7 +30,7 @@ def resume_template():
 def ReadBDD():
     conn = get_db_connection()  # Utilisation de la fonction définie pour la connexion
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM livres;')
+    cursor.execute('SELECT * FROM messages;')
     data = cursor.fetchall()
     conn.close()
     
